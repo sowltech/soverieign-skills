@@ -8,12 +8,22 @@ const DATA_FILE = path.join(__dirname, '../data/skills.json');
 
 function readSkills() {
   if (!fs.existsSync(DATA_FILE)) return [];
-  const raw = fs.readFileSync(DATA_FILE, 'utf-8');
-  return JSON.parse(raw);
+  try {
+    const raw = fs.readFileSync(DATA_FILE, 'utf-8');
+    return JSON.parse(raw);
+  } catch (err) {
+    console.error('Failed to read skills data:', err.message);
+    return [];
+  }
 }
 
 function writeSkills(skills) {
-  fs.writeFileSync(DATA_FILE, JSON.stringify(skills, null, 2));
+  try {
+    fs.writeFileSync(DATA_FILE, JSON.stringify(skills, null, 2));
+  } catch (err) {
+    console.error('Failed to write skills data:', err.message);
+    throw new Error('Could not save skills data');
+  }
 }
 
 router.get('/', (req, res) => {
@@ -42,7 +52,11 @@ router.post('/', (req, res) => {
     createdAt: new Date().toISOString()
   };
   skills.push(newSkill);
-  writeSkills(skills);
+  try {
+    writeSkills(skills);
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
   res.status(201).json(newSkill);
 });
 
@@ -57,7 +71,11 @@ router.put('/:id', (req, res) => {
   if (proficiency !== undefined) updates.proficiency = proficiency;
   if (description !== undefined) updates.description = description;
   skills[index] = { ...skills[index], ...updates };
-  writeSkills(skills);
+  try {
+    writeSkills(skills);
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
   res.json(skills[index]);
 });
 
@@ -66,7 +84,11 @@ router.delete('/:id', (req, res) => {
   const index = skills.findIndex(s => s.id === req.params.id);
   if (index === -1) return res.status(404).json({ error: 'Skill not found' });
   const deleted = skills.splice(index, 1)[0];
-  writeSkills(skills);
+  try {
+    writeSkills(skills);
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
   res.json(deleted);
 });
 
