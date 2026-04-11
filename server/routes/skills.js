@@ -50,7 +50,13 @@ router.put('/:id', (req, res) => {
   const skills = readSkills();
   const index = skills.findIndex(s => s.id === req.params.id);
   if (index === -1) return res.status(404).json({ error: 'Skill not found' });
-  skills[index] = { ...skills[index], ...req.body, id: skills[index].id };
+  const { name, category, proficiency, description } = req.body;
+  const updates = {};
+  if (name !== undefined) updates.name = name;
+  if (category !== undefined) updates.category = category;
+  if (proficiency !== undefined) updates.proficiency = proficiency;
+  if (description !== undefined) updates.description = description;
+  skills[index] = { ...skills[index], ...updates };
   writeSkills(skills);
   res.json(skills[index]);
 });

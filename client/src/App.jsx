@@ -30,33 +30,45 @@ export default function App() {
   }
 
   async function handleAdd(skillData) {
-    const res = await fetch(API, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(skillData)
-    })
-    if (!res.ok) throw new Error('Failed to add skill')
-    const newSkill = await res.json()
-    setSkills(prev => [...prev, newSkill])
-    setShowForm(false)
+    try {
+      const res = await fetch(API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(skillData)
+      })
+      if (!res.ok) throw new Error('Failed to add skill')
+      const newSkill = await res.json()
+      setSkills(prev => [...prev, newSkill])
+      setShowForm(false)
+    } catch (err) {
+      setError(err.message)
+    }
   }
 
   async function handleUpdate(skillData) {
-    const res = await fetch(`${API}/${editingSkill.id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(skillData)
-    })
-    if (!res.ok) throw new Error('Failed to update skill')
-    const updated = await res.json()
-    setSkills(prev => prev.map(s => s.id === updated.id ? updated : s))
-    setEditingSkill(null)
+    try {
+      const res = await fetch(`${API}/${editingSkill.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(skillData)
+      })
+      if (!res.ok) throw new Error('Failed to update skill')
+      const updated = await res.json()
+      setSkills(prev => prev.map(s => s.id === updated.id ? updated : s))
+      setEditingSkill(null)
+    } catch (err) {
+      setError(err.message)
+    }
   }
 
   async function handleDelete(id) {
-    const res = await fetch(`${API}/${id}`, { method: 'DELETE' })
-    if (!res.ok) throw new Error('Failed to delete skill')
-    setSkills(prev => prev.filter(s => s.id !== id))
+    try {
+      const res = await fetch(`${API}/${id}`, { method: 'DELETE' })
+      if (!res.ok) throw new Error('Failed to delete skill')
+      setSkills(prev => prev.filter(s => s.id !== id))
+    } catch (err) {
+      setError(err.message)
+    }
   }
 
   function handleEdit(skill) {
