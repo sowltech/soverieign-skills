@@ -1,0 +1,26 @@
+[
+  {
+    "id": "1",
+    "name": "JavaScript",
+    "category": "Technical",
+    "proficiency": "Advanced",
+    "description": "Modern JavaScript including ES6+ features, async/await, and module systems.",
+    "createdAt": "2024-01-15T10:00:00.000Z"
+  },
+  {
+    "id": "2",
+    "name": "Team Leadership",
+    "category": "Leadership",
+    "proficiency": "Intermediate",
+    "description": "Leading cross-functional teams, facilitating standups, and managing project timelines.",
+    "createdAt": "2024-01-20T09:00:00.000Z"
+  },
+  {
+    "id": "3",
+    "name": "Data Analysis",
+    "category": "Analytical",
+    "proficiency": "Expert",
+    "description": "Statistical analysis, data visualization, and deriving actionable insights from complex datasets.",
+    "createdAt": "2024-02-01T14:30:00.000Z"
+  }
+]
