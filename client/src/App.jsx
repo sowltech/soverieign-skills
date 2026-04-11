@@ -41,7 +41,7 @@ export default function App() {
       setSkills(prev => [...prev, newSkill])
       setShowForm(false)
     } catch (err) {
-      setError(err.message)
+      setError(`Failed to add skill: ${err.message}`)
     }
   }
 
@@ -57,7 +57,7 @@ export default function App() {
       setSkills(prev => prev.map(s => s.id === updated.id ? updated : s))
       setEditingSkill(null)
     } catch (err) {
-      setError(err.message)
+      setError(`Failed to update skill: ${err.message}`)
     }
   }
 
@@ -67,7 +67,7 @@ export default function App() {
       if (!res.ok) throw new Error('Failed to delete skill')
       setSkills(prev => prev.filter(s => s.id !== id))
     } catch (err) {
-      setError(err.message)
+      setError(`Failed to delete skill: ${err.message}`)
     }
   }
 
